@@ -59,13 +59,18 @@ app.post("/compose", function(req, res){
 });
 
 app.get("/posts/:postId", function(req, res){
-  const requestedPostId = _.lowerCase(req.params.postId);
+  const str = _.lowerCase(req.params.postId);
+  const requestedPostId = str.split(" ").join("");
 
   Post.findOne({_id: requestedPostId}, function(err, post){
-    res.render("post", {
-      title: post.title,
-      content: post.content
-    });
+    if(!err){
+      res.render("post", {
+        title: post.title,
+        content: post.content
+      });
+    }else{
+      console.log(err);
+    }
   });
 });
 
